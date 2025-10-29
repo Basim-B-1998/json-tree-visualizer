@@ -69,3 +69,23 @@ export const parseJSON = (data: any, path: string = '$', key?: string): TreeNode
 
   return null;
 };
+
+export const findNodeByPath = (root: TreeNode | null, searchPath: string): TreeNode | null => {
+  if (!root) return null;
+
+  const normalizedSearch = searchPath.trim();
+  const normalizedRootPath = root.path.trim();
+
+  if (normalizedRootPath === normalizedSearch) {
+    return root;
+  }
+
+  if (root.children) {
+    for (const child of root.children) {
+      const found = findNodeByPath(child, searchPath);
+      if (found) return found;
+    }
+  }
+
+  return null;
+};
