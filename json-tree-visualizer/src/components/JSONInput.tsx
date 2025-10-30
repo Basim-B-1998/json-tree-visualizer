@@ -20,7 +20,7 @@ const sampleJSON = {
   ]
 };
 
-const JSONInput = ({ onGenerate }: JSONInputProps) => {
+const JSONInput = ({ onGenerate,onClear }: JSONInputProps) => {
   const [input, setInput] = useState(JSON.stringify(sampleJSON, null, 2));
   const [error, setError] = useState('');
 
@@ -34,7 +34,11 @@ const JSONInput = ({ onGenerate }: JSONInputProps) => {
     }
   };
 
-
+const handleClear = () => {
+    setInput('');
+    setError('');
+    onClear();
+  };
 
   return (
     <div className="w-full max-w-2xl space-y-4">
@@ -62,6 +66,7 @@ const JSONInput = ({ onGenerate }: JSONInputProps) => {
           Generate Tree
         </button>
         <button
+          onClick={handleClear}
           className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium"
         >
           Clear
