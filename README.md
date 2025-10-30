@@ -1,4 +1,4 @@
-# JSON Tree Visualizer 🌳
+# JSON Tree Visualizer 
 
 An interactive and visually appealing **JSON Tree Visualizer** built with React, TypeScript, and React Flow.  
 This app dynamically parses and visualizes JSON data as an expandable and connected tree structure — perfect for developers and data enthusiasts.
