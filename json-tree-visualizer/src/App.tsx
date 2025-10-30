@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import JSONInput from './components/JSONInput';
 import SearchBar from './components/SearchBar';
 import TreeVisualizer from './components/TreeVisualizer';
+import ThemeToggle from './components/ThemeToggle';
 import type { TreeNode } from './types';
 import { parseJSON, findNodeByPath } from './utils/jsonParser';
 
@@ -9,8 +10,16 @@ function App() {
   const [treeData, setTreeData] = useState<TreeNode | null>(null);
   const [highlightedNodeId, setHighlightedNodeId] = useState<string>();
   const [matchFound, setMatchFound] = useState<boolean | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [showInput, setShowInput] = useState(true);
 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   const handleGenerate = (data: any) => {
     const tree = parseJSON(data);
@@ -43,6 +52,9 @@ function App() {
     }
   };
 
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -51,6 +63,7 @@ function App() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             JSON Tree Visualizer
           </h1>
+          <ThemeToggle isDark={isDarkMode} onToggle={toggleTheme} />
         </div>
 
         {showInput && (
@@ -100,6 +113,9 @@ function App() {
                   <span className="text-blue-900 dark:text-blue-100">Highlighted</span>
                 </div>
               </div>
+              <p className="mt-2 text-sm text-blue-800 dark:text-blue-200">
+                Tip: Click any node to copy its JSON path to clipboard. Hover over nodes to see full details.
+              </p>
             </div>
           </>
         )}
