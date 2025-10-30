@@ -34,13 +34,13 @@ This app dynamically parses and visualizes JSON data as an expandable and connec
 
 ## ⚙️ Installation & Setup
 
-1. Navigate to the backend folder
+1. Navigate to the folder
 cd json-tree-visualizer
 
 2. Install dependencies
 npm install
 
-3. Start the backend server
+3. Start the server
 npm run dev
 
 
