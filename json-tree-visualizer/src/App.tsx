@@ -1,26 +1,48 @@
 import { useState } from 'react';
 import JSONInput from './components/JSONInput';
+import SearchBar from './components/SearchBar';
 import TreeVisualizer from './components/TreeVisualizer';
 import type { TreeNode } from './types';
-import { parseJSON } from './utils/jsonParser';
+import { parseJSON, findNodeByPath } from './utils/jsonParser';
 
 function App() {
   const [treeData, setTreeData] = useState<TreeNode | null>(null);
   const [highlightedNodeId, setHighlightedNodeId] = useState<string>();
+  const [matchFound, setMatchFound] = useState<boolean | null>(null);
   const [showInput, setShowInput] = useState(true);
+
 
   const handleGenerate = (data: any) => {
     const tree = parseJSON(data);
     setTreeData(tree);
     setHighlightedNodeId(undefined);
+    setMatchFound(null);
     setShowInput(false);
   };
 
   const handleClear = () => {
     setTreeData(null);
     setHighlightedNodeId(undefined);
+    setMatchFound(null);
     setShowInput(true);
   };
+
+  const handleSearch = (path: string) => {
+    if (!treeData || !path.trim()) {
+      setMatchFound(null);
+      return;
+    }
+
+    const found = findNodeByPath(treeData, path);
+    if (found) {
+      setHighlightedNodeId(found.id);
+      setMatchFound(true);
+    } else {
+      setHighlightedNodeId(undefined);
+      setMatchFound(false);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -40,6 +62,7 @@ function App() {
         {!showInput && (
           <>
             <div className="mb-6 flex items-center justify-between">
+              <SearchBar onSearch={handleSearch} matchFound={matchFound} />
               <button
                 onClick={() => setShowInput(true)}
                 className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium"
@@ -49,7 +72,10 @@ function App() {
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg h-[600px] border border-gray-200 dark:border-gray-700">
-              <TreeVisualizer treeData={treeData} highlightedNodeId={highlightedNodeId} />
+              <TreeVisualizer
+                treeData={treeData}
+                highlightedNodeId={highlightedNodeId}
+              />
             </div>
 
             <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg border border-blue-200 dark:border-blue-700">
