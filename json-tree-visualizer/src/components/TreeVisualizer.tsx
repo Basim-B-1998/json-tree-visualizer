@@ -10,6 +10,7 @@ import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
 import type { TreeNode } from '../types';
 import { convertToReactFlow } from '../utils/treeLayout';
+import type { Node } from 'reactflow';
 
 interface TreeVisualizerProps {
   treeData: TreeNode | null;
@@ -77,7 +78,7 @@ const TreeVisualizerContent = ({ treeData, highlightedNodeId }: TreeVisualizerPr
       <Background />
       <Controls />
       <MiniMap
-        nodeColor={(node) => {
+        nodeColor={(node: Node) => {
           const nodeType = node.data.nodeType;
           switch (nodeType) {
             case 'object':
